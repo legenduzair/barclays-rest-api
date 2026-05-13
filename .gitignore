@@ -1,0 +1,4 @@
+node_modules/
+eagle-bank.db
+eagle-bank.db-wal
+eagle-bank.db-shm

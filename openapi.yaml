@@ -5,6 +5,8 @@ info:
   description: |-
     We want you to create a REST API for Eagle Bank which conforms to this OpenAPI specification which allows a user to create, fetch, update and delete a bank account and deposit or withdraw money from the account. These will be stored as transactions against a bank account which be retrieved but not modified or deleted.
 tags:
+  - name: auth
+    description: Authenticate a user
   - name: account
     description: Manage a bank account
   - name: transaction
@@ -12,6 +14,44 @@ tags:
   - name: user
     description: Manage a user
 paths:
+  /v1/auth/login:
+    post:
+      tags:
+        - auth
+      description: Authenticate a user and return a JWT bearer token
+      operationId: loginUser
+      requestBody:
+        description: User credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid details supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestErrorResponse'
+        '401':
+          description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: An unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /v1/accounts:
     post:
       tags:
@@ -783,6 +823,7 @@ components:
         - address
         - phoneNumber
         - email
+        - password
       properties:
         name:
           type: string
@@ -813,7 +854,11 @@ components:
           format: ^\+[1-9]\d{1,14}$
         email:
           type: string
-          format: email    
+          format: email
+        password:
+          type: string
+          minLength: 8
+          description: Password is hashed before storage and never returned
     UpdateUserRequest:
       type: object
       properties:
@@ -897,6 +942,28 @@ components:
         updatedTimestamp:
           type: string
           format: 'date-time'
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+    LoginResponse:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: JWT bearer token to use in the Authorization header
+          examples:
+            - "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
     ErrorResponse:
       type: object
       required:

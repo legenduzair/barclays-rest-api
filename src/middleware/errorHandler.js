@@ -10,10 +10,12 @@ const { ZodError } = require('zod');
  */
 function errorHandler(err, req, res, next) {
   // 1. Zod validation errors → 400 Bad Request
+  // Zod v4 uses `issues`, v3 used `errors` — support both
   if (err instanceof ZodError) {
+    const issues = err.issues ?? err.errors ?? [];
     return res.status(400).json({
       message: 'Validation failed',
-      details: err.errors.map((e) => ({
+      details: issues.map((e) => ({
         field: e.path.join('.'),
         message: e.message,
         type: e.code,
