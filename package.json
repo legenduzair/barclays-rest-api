@@ -1,0 +1,33 @@
+{
+  "name": "barclays-rest-api",
+  "version": "1.0.0",
+  "description": "Tech Test for Barclays",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "JWT_SECRET=eagle-bank-dev-secret nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/legenduzair/barclays-rest-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/legenduzair/barclays-rest-api/issues"
+  },
+  "homepage": "https://github.com/legenduzair/barclays-rest-api#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "better-sqlite3": "^12.10.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nanoid": "^5.1.11",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
