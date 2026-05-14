@@ -52,4 +52,11 @@ db.exec(`
   );
 `);
 
+// Indexes for query performance — these columns are used in WHERE clauses frequently
+db.exec(`
+  CREATE INDEX IF NOT EXISTS idx_accounts_user_id ON accounts(user_id);
+  CREATE INDEX IF NOT EXISTS idx_transactions_account_number ON transactions(account_number);
+  CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+`);
+
 module.exports = db;

@@ -182,3 +182,28 @@ src/
     ├── accounts.js         # CRUD /v1/accounts
     └── transactions.js     # Create/Read /v1/accounts/:id/transactions
 ```
+
+## Future Improvements
+
+If this were a production application, I would add:
+
+### Security
+- **Rate limiting** (e.g. `express-rate-limit`) on the login endpoint to prevent brute-force attacks
+- **Helmet.js** for secure HTTP headers (HSTS, CSP, X-Frame-Options)
+- **Input sanitisation** to strip HTML/scripts from string fields
+- **Refresh tokens** — short-lived access tokens (15 min) with a separate refresh token flow
+
+### Performance & Scalability
+- **PostgreSQL** instead of SQLite for concurrent access, connection pooling, and replication
+- **Pagination** on list endpoints (`?page=1&limit=20`) to avoid returning unbounded result sets
+- **Caching** (Redis) for frequently accessed data like account balances
+
+### Code Quality
+- **Automated tests** — unit tests for business logic, integration tests for API endpoints (Jest + Supertest)
+- **Request logging** with a structured logger like Pino or Winston
+- **API versioning strategy** — the `/v1` prefix is there but no mechanism to run v1 and v2 side by side
+- **Service layer** — extract business logic out of route handlers into separate service modules for better testability
+
+### Data Integrity
+- **Store monetary values as integers** (pence/cents) to avoid floating-point precision issues. £10.99 would be stored as 1099
+- **Soft deletes** — mark records as deleted rather than removing them, for audit purposes
